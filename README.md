@@ -18,17 +18,18 @@
 
 ## 📌 Overview
 
-Prometheus / Alertmanager / exporter configuration security auditor
+OPromX is an offline, read-only configuration auditor for the Prometheus monitoring stack. It parses Prometheus, Alertmanager, Pushgateway and exporter configurations along with component command-line flags, and flags exposure, TLS, authentication and secret-handling issues. Each finding carries a grade, CWE and MITRE ATT&CK reference.
 
 ---
 
 ## ✨ Features
 
 - Stdlib YAML-subset parser with per-key line numbers
-- prometheus.yml / web-config.yml / alertmanager.yml / blackbox.yml + component flags (systemd ExecStart, /etc/default, pasted command lines)
-- Admin / lifecycle APIs, 0.0.0.0 listeners, TLS, bcrypt, inline secrets (masked), http remote_write / webhooks, unencrypted gossip, textfile dir, blackbox SSRF, perms
-- Score + grade A+…F, CWE + MITRE ATT&CK on every rule
-- TXT / MD / JSON / CSV / SARIF, --demo, --fail-on
+- Audits prometheus.yml, alertmanager.yml, blackbox.yml, web-config.yml and component flags
+- Detects admin/lifecycle API exposure, 0.0.0.0 listeners, missing TLS and weak auth
+- Flags inline secrets (masked), insecure remote_write/webhooks and blackbox SSRF
+- Score and A+ to F grade with CWE and MITRE ATT&CK mapping
+- TXT/MD/JSON/CSV/SARIF export, rule catalogue, templates and CI gates
 
 ---
 
@@ -42,7 +43,10 @@ Prometheus / Alertmanager / exporter configuration security auditor
 ## 🚀 Usage
 
 ```bash
-./OPromX
+./OPromX /etc/prometheus/prometheus.yml
+./OPromX --scan --root /mnt/collected --sarif -o report.sarif
+./OPromX --cmd "alertmanager --cluster.peer=..." --fail-on high
+./OPromX --help
 ```
 
 ---
